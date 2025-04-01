@@ -21,11 +21,18 @@ const AuthForm = ({ type }: { type: FormType }) => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm<{ email: string; password: string; name?: string }>();
 
-  const AuthSubmit = async (data) => {
+  const AuthSubmit = async (data: {
+    email: string;
+    password: string;
+    name?: string;
+  }) => {
     if (type === "sign-up") {
-      const result = await SignUp(data);
+      const result = await SignUp({
+        ...data,
+        name: data.name || "", // Ensure name is always a string
+      });
       if (!result.success) {
         setToastMSG(result.message);
         setToastColor("error");
