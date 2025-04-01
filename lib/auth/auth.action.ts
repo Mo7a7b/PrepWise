@@ -6,7 +6,7 @@ import { cookies } from "next/headers";
 export const SignIn = async (email: string, password: string) => {
   try {
     const response = await axios.post(
-      `http://localhost:3000/api/auth/signin`,
+      `${process.env.BASE_URL}/api/auth/signin`,
       {
         email,
         password,
@@ -30,7 +30,10 @@ export const SignUp = async (userData: {
   password: string;
 }) => {
   try {
-    const response = await axios.post(`/api/auth/signup`, userData);
+    const response = await axios.post(
+      `${process.env.BASE_URL}/api/auth/signup`,
+      userData
+    );
     return response.data;
   } catch (error) {
     console.error("Error registering user:", error);
