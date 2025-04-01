@@ -70,7 +70,7 @@ const AuthForm = ({ type }: { type: FormType }) => {
               />
               {errors.name && (
                 <span className="text-red-500 text-xs">
-                  {errors.name.message}
+                  {String(errors.name.message)}
                 </span>
               )}
             </div>
@@ -95,7 +95,7 @@ const AuthForm = ({ type }: { type: FormType }) => {
             />
             {errors.email && (
               <span className="text-red-500 text-xs">
-                {errors.email.message}
+                {String(errors.email.message)}
               </span>
             )}
           </div>
@@ -133,7 +133,7 @@ const AuthForm = ({ type }: { type: FormType }) => {
             />
             {errors.password && (
               <span className="text-red-500 text-xs">
-                {errors.password.message}
+                {String(errors.password.message)}
               </span>
             )}
           </div>
