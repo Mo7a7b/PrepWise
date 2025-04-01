@@ -7,6 +7,7 @@ import { Button } from "./ui/Button";
 import { useForm } from "react-hook-form";
 import Toast from "./ui/Toast";
 import { useRouter } from "next/navigation";
+import { SignIn, SignUp } from "@/lib/auth/auth.action";
 type FormType = "sign-up" | "sign-in";
 type toastType = "success" | "error" | "info" | "warning";
 
@@ -22,9 +23,33 @@ const AuthForm = ({ type }: { type: FormType }) => {
     formState: { errors },
   } = useForm();
 
-  const AuthSubmit = async (data: any) => {
+  const AuthSubmit = async (data) => {
     if (type === "sign-up") {
+      const result = await SignUp(data);
+      if (!result.success) {
+        setToastMSG(result.message);
+        setToastColor("error");
+        setShowToast(true);
+        return;
+      }
+      setToastMSG("Account created successfully. Please sign in.");
+      setToastColor("success");
+      setShowToast(true);
+      router.push("/sign-in");
     } else {
+      const result = await SignIn(data.email, data.password);
+      console.log(result);
+
+      if (!result.success) {
+        setToastMSG(result.message);
+        setToastColor("error");
+        setShowToast(true);
+        return;
+      }
+      setToastMSG("Signed in successfully.");
+      setToastColor("success");
+      setShowToast(true);
+      router.push("/");
     }
   };
 

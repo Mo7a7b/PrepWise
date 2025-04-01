@@ -1,14 +1,21 @@
+"use server";
 import axios from "axios";
-
-const API_BASE_URL = process.env.BASE_URL; // Replace with your API base URL
+import { cookies } from "next/headers";
 
 // Function to login a user
 export const SignIn = async (email: string, password: string) => {
   try {
-    const response = await axios.post(`${API_BASE_URL}/api/auth/signin`, {
-      email,
-      password,
-    });
+    const response = await axios.post(
+      `http://localhost:3000/api/auth/signin`,
+      {
+        email,
+        password,
+      },
+      {
+        withCredentials: true,
+      }
+    );
+    console.log("the full response: " + response.headers);
     return response.data;
   } catch (error) {
     console.error("Error logging in user:", error);
@@ -23,13 +30,21 @@ export const SignUp = async (userData: {
   password: string;
 }) => {
   try {
-    const response = await axios.post(
-      `${API_BASE_URL}/api/auth/register`,
-      userData
-    );
+    const response = await axios.post(`/api/auth/signup`, userData);
     return response.data;
   } catch (error) {
     console.error("Error registering user:", error);
     throw error;
+  }
+};
+
+export const isAuthenticated = async () => {
+  try {
+    const cookieStore = await cookies();
+    const token = cookieStore.get("token");
+    return !!token;
+  } catch (error) {
+    console.error("Error checking authentication:", error);
+    return false;
   }
 };

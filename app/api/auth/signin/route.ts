@@ -48,9 +48,10 @@ export async function POST(req: Request) {
       { success: true, user, token },
       { status: 200 }
     );
+    response.headers.set("Access-Control-Allow-Credentials", "true");
     response.headers.set(
       "Set-Cookie",
-      `token=${token}; HttpOnly; Path=/; Max-Age=604800;`
+      `usertoken=${token}; HttpOnly; Path=/; Max-Age=604800; SameSite=Strict;`
     );
     return response;
   } catch (error) {
